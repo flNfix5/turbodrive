@@ -15,7 +15,7 @@ export const Contacts = () => {
           <button className="copy-btn bg-light border-0" data-DC="egrid@kkszki.hu">
             <i className="bi bi-clipboard"></i>
           </button>
-          <input type="text" className="bg-light" value="egrid@kkszki.hu" id="egrid@kkszki.hu" readOnly />
+          <input type='email' className="bg-light" value="egrid@kkszki.hu" id="egrid@kkszki.hu" readOnly />
         </div>
 
         <div className="container mt-2 border-1 border-start border-dark">
@@ -24,7 +24,7 @@ export const Contacts = () => {
           <button className="copy-btn bg-light border-0" data-DC="halascsaksz@kkszki.hu">
             <i className="bi bi-clipboard"></i>
           </button>
-          <input type="text" className="bg-light" value="halascsaksz@kkszki.hu" id="halascsaksz@kkszki.hu" readOnly />
+          <input type="email" className="bg-light" value="halascsaksz@kkszki.hu" id="halascsaksz@kkszki.hu" readOnly />
         </div>
       </div>
     </div>

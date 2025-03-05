@@ -50,7 +50,7 @@ export const Regisztracio = () => {
         console.log(requestBody);
 
         try {
-            const response = await axios.post("https://localhost:5001/api/Registry", requestBody);
+            const response = await axios.post("http://localhost:5000/api/Registry", requestBody);
             alert(response.data);
             navigate("/");
         }catch(error) {

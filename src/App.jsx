@@ -1,3 +1,4 @@
+import { GlobalProvider } from "./Context/GlobalContext";
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import './App.css';
@@ -8,27 +9,36 @@ import { Conditions } from './Components/Conditions';
 import { Login } from './Components/Login';
 import { Regisztracio } from './Components/Regisztracio';
 import { Details } from './Components/Details';
-
+import { Luxus } from './Components/Luxus';
+import { Cheap } from './Components/cheap';
+import { Comfort } from './Components/Comfort';
+import { Exclusive } from './Components/Exclusive';
 
 export const App = () => {
-  const [activeTab, setActiveTab] = useState('Homepage');
   const [activePriceCategory, setActivePriceCategory] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Manage login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
 
   const handlePriceCategoryClick = (category) => {
     setActivePriceCategory(category);
-    setActiveTab('PriceList');
+  };
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(true);
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);  // Reset login state
+    setIsLoggedIn(false);
+    setUser(null);
   };
 
+  const token = user ? user.token : '';
+  const id = 0;
+
   return (
+    <GlobalProvider>
     <Router>
       <div className="container-fluid position-absolute h-100 d-flex p-0">
         <div className="d-flex flex-column flex-fill">
@@ -44,14 +54,10 @@ export const App = () => {
                 <div className="collapse navbar-collapse justify-content-end" id="navbarNav-0">
                   <ul className="navbar-nav">
                     <li className="nav-item">
-                      <NavLink to="/Homepage" className="nav-link" activeClassName="active">
-                        Kezdőlap
-                      </NavLink>
+                      <NavLink to="/Homepage" className="nav-link">Kezdőlap</NavLink>
                     </li>
                     <li className="nav-item">
-                      <NavLink to="/Conditions" className="nav-link" activeClassName="active">
-                        Bérlési feltételek
-                      </NavLink>
+                      <NavLink to="/Conditions" className="nav-link">Bérlési feltételek</NavLink>
                     </li>
                     <li className="nav-item dropdown">
                       <a className="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
@@ -59,43 +65,32 @@ export const App = () => {
                       </a>
                       <ul className="dropdown-menu">
                         <li>
-                          <NavLink to="/PriceList" className="nav-link" activeClassName="active" onClick={() => handlePriceCategoryClick('cheap')}>
-                            Alsó kategória
-                          </NavLink>
+                          <NavLink to="/PriceList" className="nav-link" onClick={() => handlePriceCategoryClick('PriceList')}>Összes</NavLink>
                         </li>
                         <li>
-                          <NavLink to="/PriceList" className="nav-link" activeClassName="active" onClick={() => handlePriceCategoryClick('comfort')}>
-                            Középső kategória
-                          </NavLink>
+                          <NavLink to="/cheap" className="nav-link" onClick={() => handlePriceCategoryClick('cheap')}>Alsó kategória</NavLink>
                         </li>
                         <li>
-                          <NavLink to="/PriceList" className="nav-link" activeClassName="active" onClick={() => handlePriceCategoryClick('exclusive')}>
-                            Felső kategória
-                          </NavLink>
+                          <NavLink to="/comfort" className="nav-link" onClick={() => handlePriceCategoryClick('comfort')}>Középső kategória</NavLink>
                         </li>
                         <li>
-                          <NavLink to="/PriceList" className="nav-link" activeClassName="active" onClick={() => handlePriceCategoryClick('luxury')}>
-                            Luxus kategória
-                          </NavLink>
+                          <NavLink to="/exclusive" className="nav-link" onClick={() => handlePriceCategoryClick('exclusive')}>Felső kategória</NavLink>
+                        </li>
+                        <li>
+                          <NavLink to="/Luxus" className="nav-link" onClick={() => handlePriceCategoryClick('luxus')}>Luxus kategória</NavLink>
                         </li>
                       </ul>
                     </li>
                     <li className="nav-item">
-                      <NavLink to="/Contacts" className="nav-link" activeClassName="active">
-                        Elérhetőségek
-                      </NavLink>
+                      <NavLink to="/Contacts" className="nav-link">Elérhetőségek</NavLink>
                     </li>
                     {!isLoggedIn ? (
                       <>
                         <li className="nav-item">
-                          <NavLink to={"/Login"} className="nav-link" activeClassName="active">
-                            Bejelentkezés
-                          </NavLink>
+                          <NavLink to="/Login" className="nav-link">Bejelentkezés</NavLink>
                         </li>
                         <li className="nav-item">
-                          <NavLink to={"/Regisztracio"} className="nav-link" activeClassName="active">
-                            Regisztráció
-                          </NavLink>
+                          <NavLink to="/Regisztracio" className="nav-link">Regisztráció</NavLink>
                         </li>
                       </>
                     ) : (
@@ -112,16 +107,21 @@ export const App = () => {
           <div id="Main" className="d-flex flex-fill overflow-auto">
             <Routes>
               <Route path="/Homepage" element={<Homepage />} />
-              <Route path="/PriceList" element={<PriceList activePriceCategory={activePriceCategory} isLoggedIn={isLoggedIn} />} />
+              <Route path="/PriceList" element={<PriceList activePriceCategory={activePriceCategory} token={token} />} />
+              <Route path="/Cheap" element={<Cheap token={token} />} />
+              <Route path="/Comfort" element={<Comfort token={token} />} />
+              <Route path="/Exclusive" element={<Exclusive token={token} />} />
+              <Route path="/Luxus" element={<Luxus token={token}  />} />
               <Route path="/Contacts" element={<Contacts />} />
               <Route path="/Conditions" element={<Conditions />} />
-              <Route path="/Login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+              <Route path="/Login" element={<Login onLogin={handleLogin} />} />
               <Route path="/Regisztracio" element={<Regisztracio />} />
-              <Route path="/Details/:productName" element={<Details />} />
+              <Route path="/Details/:id" element={<Details  token={token} id={id}/>} />
             </Routes>
           </div>
         </div>
       </div>
     </Router>
+    </GlobalProvider>
   );
 };
