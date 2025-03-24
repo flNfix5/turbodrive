@@ -1,20 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGlobalContext } from '../Context/GlobalContext';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const Details = ({ token, Id }) => {
   const {apiUrl, ftpUrl} = useGlobalContext();
   const { id } = useParams();
   const [carDetails, setCarDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchCarDetails = async () => {
       alert(ftpUrl);
       try {
+        setLoading(true);
         let url = apiUrl+"Car/CarDetails/"+"token"+","+id;
+        //let url = `${apiUrl}+"Car/CarDetails/"token${id}`;
         console.log(url);
         const response = await axios.get(url);
         
@@ -36,8 +38,11 @@ export const Details = ({ token, Id }) => {
     };
 
     fetchCarDetails();
-  }, [id]);
-
+  }, [id, apiUrl, ftpUrl, token]);
+const handleBooking = () => {
+    alert(`Foglalás sikeres! Autó ID: ${id}`);
+    navigate("/Booking", { token, id });
+};
   if (loading) {
     return <div className="container text-center mt-5" style={{ color: 'white' }}><h2>Betöltés...</h2></div>;
   }
@@ -76,7 +81,7 @@ export const Details = ({ token, Id }) => {
                 <li><strong>Váltó:</strong>{carDetails.gearbox}</li>
               </ul>
               <p style={{color: 'white'}}><strong>Leírás:</strong> {carDetails.description}</p>
-              <button className="btn btn-success mt-3">Foglalás</button>
+              <button className="btn btn-success mt-3" onClick={handleBooking}>Foglalás</button>
             </div>
           </div>
         </div>

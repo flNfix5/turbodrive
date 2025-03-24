@@ -22,17 +22,13 @@ export const Cheap = ({ token }) => {
     navigate(`/Details/${id}`);
   };
 
-  const handleBookNow = (productName) => {
+  const handleBookNow = (carId, productName) => {
     if (!token) {
       alert('Kérlek jelentkezz be a foglaláshoz!');
       return;
     }
-
-    const templateParams = {
-      to_email: 'nagy.pista.kkszki@gmail.com',
-      product_name: productName,
-    };
-    // A foglalás logikáját itt érdemes hozzáadni (pl. email küldés).
+    
+    navigate(`/Booking/${carId}`);
   };
 
   return (
@@ -53,11 +49,11 @@ export const Cheap = ({ token }) => {
                 Részletek
               </button>
               <button
-                onClick={() => handleBookNow(carItem.productName)}
+                onClick={() => handleBookNow(carItem.id)}
                 className="btn btn-primary mt-2"
-                disabled={!token} // Gomb inaktív, ha nincs bejelentkezve
+                disabled={!token}
                 style={{
-                  backgroundColor: token ? '#fffff' : '#ccc', // Aktív és inaktív szín
+                  backgroundColor: token ? '#fffff' : '#ccc',
                   cursor: token ? 'pointer' : 'not-allowed',
                 }}
               >

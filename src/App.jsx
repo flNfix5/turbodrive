@@ -13,6 +13,7 @@ import { Luxus } from './Components/Luxus';
 import { Cheap } from './Components/cheap';
 import { Comfort } from './Components/Comfort';
 import { Exclusive } from './Components/Exclusive';
+import { Booking } from './Components/Booking';
 
 export const App = () => {
   const [activePriceCategory, setActivePriceCategory] = useState('');
@@ -117,6 +118,7 @@ export const App = () => {
               <Route path="/Login" element={<Login onLogin={handleLogin} />} />
               <Route path="/Regisztracio" element={<Regisztracio />} />
               <Route path="/Details/:id" element={<Details  token={token} id={id}/>} />
+              <Route path="/Booking/:carId" element={<Booking />} />
             </Routes>
           </div>
         </div>
