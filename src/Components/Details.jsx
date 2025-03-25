@@ -39,9 +39,9 @@ export const Details = ({ token, Id }) => {
 
     fetchCarDetails();
   }, [id, apiUrl, ftpUrl, token]);
-const handleBooking = () => {
+  const handleBooking = () => {
     alert(`Foglalás sikeres! Autó ID: ${id}`);
-    navigate("/Booking", { token, id });
+    navigate(`/Booking/${id}`, { state: { token } });
 };
   if (loading) {
     return <div className="container text-center mt-5" style={{ color: 'white' }}><h2>Betöltés...</h2></div>;

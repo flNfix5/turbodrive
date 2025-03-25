@@ -21,25 +21,26 @@ export const Login = ({ onLogin }) => {
         loginName,
         tmpHash,
       });
-
+  
       if (loginResponse.status === 200) {
-        let userData = loginResponse.data;
-        localStorage.setItem("felhasz", JSON.stringify(userData.token));
+        const userData = loginResponse.data;
+        localStorage.setItem("userId", userData.userId); // userId mentése
+        localStorage.setItem("token", userData.token); // token mentése
         setAvatar(`http://images.balazska.nhely.hu/${userData.profilePicturePath}`);
         alert(`Sikeres bejelentkezés! Felhasználó: ${userData.name}`);
         
-        // Call onLogin to update isLoggedIn state in App.jsx
+        // onLogin hívása az App.jsx-ben lévő isLoggedIn állapot frissítéséhez
         onLogin(userData);
       } else {
         alert("Hiba történt a bejelentkezéskor!");
       }
     } catch (error) {
       alert("Hiba történt: " + error.message);
-    }
-    finally{ 
-      Navigate("/PriceList");
+    } finally { 
+      Navigate("/Homepage");
     }
   };
+  
 
   return (
     <div ref={vantaRef} style={{ height: "90vh", color: "#fff", overflow: "hidden" }}>
